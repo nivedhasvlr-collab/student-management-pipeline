@@ -3,19 +3,17 @@ pipeline {
     stages {
         stage ('Checkout') {
             steps {
-                // Connects to your existing repo
-                git branch: 'main', url: 'https://github.com/nivedhasvlr-collab/student-management-pipeline-2'
+                git branch: 'main', url: 'https://github.com'
             }
         }
         stage ('Generate Report') {
             steps {
-                // Runs the Python code to make the text file
-                bat 'python app.py'
+                // This uses your exact Python launcher path with double backslashes
+                bat '"C:\\Users\\NIVEDHA\\AppData\\Local\\Programs\\Python\\Launcher\\py.exe" app.py'
             }
         }
         stage ('Archive Report') {
             steps {
-                // Saves the file directly to the Jenkins UI for download
                 archiveArtifacts artifacts: 'report.txt', fingerprint: true
             }
         }
