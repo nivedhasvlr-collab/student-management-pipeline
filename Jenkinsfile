@@ -1,17 +1,22 @@
 pipeline {
     agent any
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select the environment')
-    }
     stages {
         stage ('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/nivedhasvlr-collab/student-management-pipeline'
+                // Connects to your existing repo
+                git branch: 'main', url: 'https://github.com/nivedhasvlr-collab/student-management-pipeline-2'
             }
         }
-        stage('Show Parameter') {
+        stage ('Generate Report') {
             steps {
-                echo "Selected environment: ${params.ENVIRONMENT}"
+                // Runs the Python code to make the text file
+                bat 'python app.py'
+            }
+        }
+        stage ('Archive Report') {
+            steps {
+                // Saves the file directly to the Jenkins UI for download
+                archiveArtifacts artifacts: 'report.txt', fingerprint: true
             }
         }
     }
